@@ -40,7 +40,8 @@ class McpPluginRunner(BaseModel):
             )
             try:
                 async with aiohttp.ClientSession() as session:
-                    timeout = aiohttp.ClientTimeout(total=40)
+                    # 设置5分钟超时，支持长时间运行的工具操作（如视频生成）
+                    timeout = aiohttp.ClientTimeout(total=300)
                     async with session.post(
                         agent_config.RUN_MCP_PLUGIN_URL,
                         json=data,
@@ -148,7 +149,8 @@ class McpPluginFactory(BaseModel):
             )
             try:
                 async with aiohttp.ClientSession() as session:
-                    timeout = aiohttp.ClientTimeout(total=40)
+                    # 设置5分钟超时，支持长时间运行的操作
+                    timeout = aiohttp.ClientTimeout(total=300)
                     async with session.post(
                         agent_config.LIST_MCP_PLUGIN_URL,
                         json=data,

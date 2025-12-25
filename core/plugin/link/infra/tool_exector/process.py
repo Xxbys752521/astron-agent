@@ -174,7 +174,9 @@ class HttpRun:
             "json": self.body if self.body else None,
         }
 
-        async with aiohttp.ClientSession() as session:
+        # 设置5分钟超时，支持长时间运行的工具操作（如视频生成）
+        timeout = aiohttp.ClientTimeout(total=300)
+        async with aiohttp.ClientSession(timeout=timeout) as session:
             async with session.request(self.method, url, **kwargs) as response:
                 response_text = await response.text()
                 status_code = response.status
